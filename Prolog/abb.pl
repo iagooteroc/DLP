@@ -11,11 +11,12 @@ insertKey(bst(K, L, R), X, bst(K, L, R)) :- X = K.
 insertKey(nil, X, bst(X, nil, nil)).
 
 
-% search(K, T) -> true if K is in tree T.
+% search(K, T, T2) -> obtains the subtree T2 with the key K in the tree T.
 
-search(X, bst(X, _, _)).
-search(X, bst(K, L, _)) :- X < K, search(X, L).
-search(X, bst(K, _, R)) :- X > K, search(X, R).
+search(X, nil, nil).
+search(X, bst(X, L, R), bst(X, L, R)).
+search(X, bst(K, L, _), T) :- X < K, search(X, L, T).
+search(X, bst(K, _, R), T) :- X > K, search(X, R, T).
 
 
 % preorder(T) -> prints the tree T in preorder
