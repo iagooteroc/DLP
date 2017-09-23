@@ -35,8 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Abb_functions.o \
-	${OBJECTDIR}/Node.o \
 	${OBJECTDIR}/main.o
 
 
@@ -64,15 +62,10 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trialnode: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trialnode ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/Abb_functions.o: Abb_functions.cpp
+${OBJECTDIR}/Abb_functions.h.gch: Abb_functions.h
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Abb_functions.o Abb_functions.cpp
-
-${OBJECTDIR}/Node.o: Node.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Node.o Node.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o "$@" Abb_functions.h
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

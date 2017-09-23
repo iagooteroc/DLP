@@ -1,5 +1,5 @@
-build/Debug/GNU-Linux/main.o: main.cpp Node.h Abb_functions.cpp
+build/Debug/GNU-Linux/main.o: main.cpp Node.h Abb_functions.h
 
 Node.h:
 
-Abb_functions.cpp:
+Abb_functions.h:

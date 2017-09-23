@@ -13,7 +13,7 @@
 
 #include <cstdlib>
 #include "Node.h"
-#include "Abb_functions.cpp"
+#include "Abb_functions.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -26,23 +26,21 @@ using namespace std;
 void preordenParentizado(Node* tree) {
     printf("(");
     if (not esArbolvacio(tree)) {
-        if (not esArbolvacio(tree->getRight()) || not esArbolvacio(tree->getLeft())) {
-            printf("HOLAAAAAAAAAAAAAAAAAA");
-            printf(" %d ", tree->getKey());
-            preordenParentizado(tree->getLeft());
+        if (not esArbolvacio(tree->right) || not esArbolvacio(tree->left)) {
+            printf(" %d ", tree->key);
+            preordenParentizado(tree->left);
             printf(" ");
-            preordenParentizado(tree->getRight());
+            preordenParentizado(tree->right);
+        }else{
+            printf(" %d ",tree->key); //no recuerdon pfff
         }
-    } else{
-        printf(" RAIZ%d ",tree->getKey()); //no recuerdon pfff
-        
     }
-    printf(")\n");
+    printf(")");
 }
 
 int main(int argc, char** argv) {
 
-    Node* tree = new Node();
+    Node* tree = NULL;
     
     /*Node *left = new Node();
     Node *right = new Node(); 
@@ -65,49 +63,49 @@ int main(int argc, char** argv) {
     
     
     printf("Insertar\n");
-    insertarClave(tree,4);
-    insertarClave(tree,4);
-    insertarClave(tree,2);
-    insertarClave(tree,6);
-    insertarClave(tree,1);
-    insertarClave(tree,3);
-    insertarClave(tree,5);
-    insertarClave(tree,7);
+    insertarClave(&tree,4);
+    insertarClave(&tree,4);
+    insertarClave(&tree,2);
+    insertarClave(&tree,6);
+    insertarClave(&tree,1);
+    insertarClave(&tree,3);
+    insertarClave(&tree,5);
+    insertarClave(&tree,7);
     
     
-    printf("preorden\n");
+    /*printf("preorden\n");
     preordenParentizado(tree);
     printf("\n");
     
-    /*
+    
     printf("Buscar\n");
-    printf("buscar 1... %d\n", tree->buscarClave(1)->getKey());
-    printf("buscar 2... %d\n", tree->buscarClave(2)->getKey());
-    printf("buscar 3... %d\n", tree->buscarClave(3)->getKey());
-    printf("buscar 4... %d\n", tree->buscarClave(4)->getKey());
-    printf("buscar 5... %d\n", tree->buscarClave(5)->getKey());
-    printf("buscar 6... %d\n", tree->buscarClave(6)->getKey());
-    printf("buscar 7... %d\n", tree->buscarClave(7)->getKey());
+    printf("buscar 1... %d\n", (buscarClave(tree,1))->key);
+    printf("buscar 2... %d\n", (buscarClave(tree,2))->key);
+    printf("buscar 3... %d\n", (buscarClave(tree,3))->key);
+    printf("buscar 4... %d\n", (buscarClave(tree,4))->key);
+    printf("buscar 5... %d\n", (buscarClave(tree,5))->key);
+    printf("buscar 6... %d\n", (buscarClave(tree,6))->key);
+    printf("buscar 7... %d\n", (buscarClave(tree,7))->key);*/
 
     printf("Eliminar\n");
     printf("eliminar 5...");
-    tree->eliminar_Clave(5);
+    eliminar_Clave(&tree,5);
     preordenParentizado(tree);
     printf("\n");
 
     printf("eliminar 6...");
-    tree->eliminar_Clave(6);
+    eliminar_Clave(&tree,6);
     preordenParentizado(tree);
     printf("\n");
 
     printf("eliminar 4...");
-    tree->eliminar_Clave(4);
+    eliminar_Clave(&tree,4);
     preordenParentizado(tree);
     printf("\n");
 
     printf("eliminar 2...");
-    tree->eliminar_Clave(2);
+    eliminar_Clave(&tree,2);
     preordenParentizado(tree);
-    printf("\n");*/
+    printf("\n");
 }
 

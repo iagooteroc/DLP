@@ -16,17 +16,10 @@
 
 class Node {
 public:
-    int getKey();
-    void setKey(int k);
-    Node* getLeft();
-    void setLeft(Node* nl);
-    Node* getRight();
-    void setRight(Node* nr);
-    Node();
-    
-private:
     int key;
     Node *left, *right;
+    
+private:
 };
 
 #endif /* NODE_H */

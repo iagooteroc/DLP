@@ -13,8 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Abb_functions.cpp</itemPath>
-      <itemPath>Node.cpp</itemPath>
+      <itemPath>Abb_functions.h</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -39,9 +38,7 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="Abb_functions.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Node.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Abb_functions.h" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Node.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -68,9 +65,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Abb_functions.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Node.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Abb_functions.h" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Node.h" ex="false" tool="3" flavor2="0">
       </item>
