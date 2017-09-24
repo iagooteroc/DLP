@@ -42,27 +42,8 @@ int main(int argc, char** argv) {
 
     Node* tree = NULL;
     
-    /*Node *left = new Node();
-    Node *right = new Node(); 
     
-    tree->setKey(5);
-    left->setKey(7);
-    right->setKey(10);
-    left->setLeft(0);
-    left->setRight(0);
-    right->setLeft(0);
-    right->setRight(0);
-    
-    printf("%d\n",tree->getKey());
-    tree->setLeft(left);
-    tree->setRight(right);
-    
-    printf("%d\n",tree->getLeft()->getKey());
-    printf("%d\n",tree->getRight()->getKey());*/
-    
-    
-    
-    printf("Insertar\n");
+    printf("Insertar...\n");
     insertarClave(&tree,4);
     insertarClave(&tree,4);
     insertarClave(&tree,2);
@@ -71,9 +52,10 @@ int main(int argc, char** argv) {
     insertarClave(&tree,3);
     insertarClave(&tree,5);
     insertarClave(&tree,7);
+     printf("\n");
     
     
-    /*printf("preorden\n");
+    printf("Preorden\n");
     preordenParentizado(tree);
     printf("\n");
     
@@ -85,7 +67,8 @@ int main(int argc, char** argv) {
     printf("buscar 4... %d\n", (buscarClave(tree,4))->key);
     printf("buscar 5... %d\n", (buscarClave(tree,5))->key);
     printf("buscar 6... %d\n", (buscarClave(tree,6))->key);
-    printf("buscar 7... %d\n", (buscarClave(tree,7))->key);*/
+    printf("buscar 7... %d\n", (buscarClave(tree,7))->key);
+     printf("\n");
 
     printf("Eliminar\n");
     printf("eliminar 5...");

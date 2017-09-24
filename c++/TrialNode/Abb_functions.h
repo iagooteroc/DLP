@@ -67,7 +67,7 @@ void insertNode_i(Node** abb, int data) {
 }
 
 void insertarClave(Node** abb, int newKey) {
-    insertNode_i(abb, newKey);
+    insertNode_r(abb, newKey);
 }
 
 /**************************************************************************/
@@ -102,7 +102,7 @@ Node* buscar_i(Node* abb, int key) {
 }
 
 Node* buscarClave(Node* abb, int key) {
-    return buscar_i(abb, key);
+    return buscar_r(abb, key);
 }
 
 
@@ -111,7 +111,7 @@ Node* buscarClave(Node* abb, int key) {
 
 void sup2(Node** b, Node** aux) {
     if ((*b)->right != NULL)
-        sup2(&(*b)->right,aux);
+        sup2(&(*b)->right, aux);
     else {
         (*aux)->key = ((*b)->key);
         (*aux) = (*b);
@@ -130,14 +130,14 @@ void eliminar_r(Node** abb, int key) {
                 Node*& right = (*abb)->right;
                 eliminar_r(&right, key);
             } else {
-                aux = (*abb); //el porblema de arbol y Node
+                aux = (*abb); 
                 if ((*abb)->left == NULL)
                     (*abb) = (*abb)->right;
                 else if ((*abb)->right == NULL)
                     (*abb) = (*abb)->left;
                 else {
                     Node*& left2 = (*abb)->left;
-                    sup2(&left2,&aux);
+                    sup2(&left2, &aux);
                 }
                 free(aux);
             }
@@ -145,72 +145,74 @@ void eliminar_r(Node** abb, int key) {
     }
 }
 
-/*
-void Node::eliminar_i(int key) {
+void eliminar_i(Node** abb, int key) {
     int numHijos;
-    Node *sup, *pSup, *hijoNoVacio, *sucIzMax, *root;
-    root = this;
+    Node *sup, *pSup, *hijoNoVacio, *sucIzMax;
 
     pSup = NULL;
-    sup = this;
-    while ((sup != NULL) && (sup->getKey() != key)) {
+    sup = (*abb);
+    while ((sup != NULL) && (sup->key != key)) {
         pSup = sup;
-        if (key < sup->getKey())
-            sup = sup->getLeft();
+        if (key < sup->key)
+            sup = sup->left;
         else
-            sup = sup->getRight();
+            sup = sup->right;
     }
 
     if (sup != NULL) {
         numHijos = 0;
-        if (sup->getLeft() != NULL)
+        if (sup->left != NULL)
             numHijos++;
-        if (sup->getRight() != NULL)
+        if (sup->right != NULL)
             numHijos++;
         switch (numHijos) {
             case 0:
+            {
                 if (pSup == NULL)
                     numHijos == 0;
-                else if (pSup->getLeft() == sup)
-                    pSup->setLeft(NULL);
+                else if (pSup->left == sup)
+                    pSup->left = (NULL);
                 else
-                    pSup->setRight(NULL);
+                    pSup->right = (NULL);
+                break;
 
-
+            };
             case 1:
             {
-                if (sup->getLeft() == NULL)
-                    hijoNoVacio = sup->getRight();
+                if (sup->left == NULL)
+                    hijoNoVacio = sup->right;
                 else
-                    hijoNoVacio = sup->getLeft();
+                    hijoNoVacio = sup->left;
 
                 if (pSup == NULL)
                     sup = hijoNoVacio; //EL THIS TINH
-                else if (pSup->getLeft() == sup)
-                    pSup->setLeft(hijoNoVacio);
+                else if (pSup->left == sup)
+                    pSup->left = hijoNoVacio;
                 else
-                    pSup->setRight(hijoNoVacio);
-            }
+                    pSup->right = hijoNoVacio;
+                break;
+            };
 
             case 2:
             {
                 pSup = sup;
-                sucIzMax = sup->getLeft();
-                while (sucIzMax->getRight() != NULL) {
+                sucIzMax = sup->left;
+                while (sucIzMax->right != NULL) {
                     pSup = sucIzMax;
-                    sucIzMax = sucIzMax->getRight();
+                    sucIzMax = sucIzMax->right;
                 }
-                sup->setKey(sucIzMax->getKey());
+                sup->key = (sucIzMax->key);
                 if (pSup == sup)
-                    pSup->setLeft(sucIzMax->getLeft());
+                    pSup->left = sucIzMax->left;
                 else
-                    pSup->setRight(sucIzMax->getLeft());
+                    pSup->right = sucIzMax->left;
                 sup = sucIzMax;
-            }
+                break;
+            };
         }
-        delete sup;
+        free(sup);
     }
-}*/
+}
 
 void eliminar_Clave(Node** abb, int key) {
     eliminar_r(abb, key);
