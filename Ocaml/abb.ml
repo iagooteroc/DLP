@@ -1,6 +1,6 @@
 type 'a bst =
     Empty
-|   Node of 'a * 'a bst * 'a bst;;
+|   Node of int * 'a bst * 'a bst;;
 
 exception Leaf;;
 
@@ -18,21 +18,56 @@ let rec insertKey x = function
 		else
 			Node (k, l, r);;
 
+(*
+let insertKeyI x = function
+    Empty -> Node (x, Empty, Empty)
+|   Node (k, l, r) -> 
+        let father : 'a bst ref = ref Empty in
+        let son : 'a bst ref = ref (Node (k, l, r)) in
+        while ((not (isEmpty (!son))) && ((root (!son)) != x)) do
+            father := !son;
+            if (x < (root (!son))) then
+                son := leftChild (!son)
+            else
+               son := rightChild (!son);
+        done;
+        if (isEmpty (!son)) then
+            if (k < (root (!father))) then
+                father := 
+                    Node ((root (!father)), Node(x, Empty, Empty), Empty)
+            else
+                father :=
+                    Node ((root (!father)), Empty, Node(x, Empty, Empty));;
+*)
+(*  No podemos devolver todo el árbol porque sólo tenemos father y son  *)
+
+
 let isEmpty = function
     Empty -> true
 |   Node(_,_,_) -> false;;
 
-let leftSon = function
+let leftChild = function
     Empty -> raise Leaf
 |   Node(_,l,_)-> l;;
 
-let rightSon = function
+let rightChild = function
     Empty -> raise Leaf
 |   Node(_,_,r)-> r;;
 
 let root = function
     Empty -> raise Leaf
 |   Node(r,_,_) -> r;;
+
+
+let rec sup (Node(k, l, r)) =
+	if (isEmpty r) then
+		if (isEmpty l) then
+			(k, Empty)
+		else 
+			(k, Node(root l, leftChild l, rightChild l)) 
+	else
+		let (auxRoot, auxLeft) = sup r in
+		(auxRoot, Node(k, l, auxLeft));;
 
 let rec removeKey x = function
 	Empty -> Empty
@@ -42,30 +77,15 @@ let rec removeKey x = function
 		else if (x > k) then
 			Node (k, l, (removeKey x r)) 
 		else if (isEmpty l) then
-			try Node (root r, leftSon r, rightSon r)
+			try Node (root r, leftChild r, rightChild r)
 			with Leaf -> Empty
 		else if (isEmpty r) then
-			Node (root l, leftSon l, rightSon l)
+			Node (root l, leftChild l, rightChild l)
 			(* no hace falta otro try porque ya sabemos que no
 				son los dos hijos Empty*)
 		else
 			let (auxRoot, auxLeft) = sup l in
 			Node(auxRoot, auxLeft, r);;
-
-let rec sup (Node(k, l, r)) =
-	if (isEmpty r) then
-		if (isEmpty l) then
-			(k, Empty)
-		else 
-			(k, Node(root l, leftSon l, rightSon l)) 
-	else
-		let (auxRoot, auxLeft) = sup r in
-		(auxRoot, Node(k, l, auxLeft));;
-
-
-let rec preorder t =
-    try (root t::preorder (leftSon t)) @ preorder (rightSon t)
-    with Leaf -> [];;
 
 
 let rec search x = function
