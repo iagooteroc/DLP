@@ -1,3 +1,8 @@
+(* Note: this file results automatically in a module implementation
+        named Abb *)
+
+(*------Auxiliar functions to work with pointers in Ocaml-------*)
+
 type 'a pointer = Null | Pointer of 'a ref;;
 
 let ( !^ ) = function
@@ -11,6 +16,8 @@ let ( ^:= ) p v =
 
 let new_pointer x = Pointer (ref x);;
 
+(****************************************************************)
+
 type tKey = int;;
 type tPos = tNode pointer
 and tNode = Empty | Node of nodeStruct
@@ -20,10 +27,19 @@ and nodeStruct = {
     mutable right: tPos};;
 type tBST = tPos;;
 
-(* warning: devuelve un árbol construído ?¿?¿*)
-let emptyTree  = 
-    let (p: tBST) = new_pointer Empty in
-    p;;
+(****************************************************************)
+
+(* emptyTree does not have the same usage as the pascal version
+    because t has to be declared before calling the function,
+    so its only use is changing the value of t to Empty *)
+let emptyTree (t: tBST) = 
+    t ^:= Empty;;
+
+(* createNode would be useless since you need to initialize
+    t before calling the function, and you can't do something
+    like "let createNode = new_pointer Empty" because this will
+    create only one pointer called "createNode" the moment you 
+    define the function. *)
 
 let root (t: tBST) = match (!^t) with
     Node {key = k; left = l; right = r} -> k;;
@@ -33,6 +49,9 @@ let leftChild (t: tBST) = match (!^t) with
 
 let rightChild (t: tBST) = match (!^t) with
     Node {key = k; left = l; right = r} -> r;;
+
+let isEmptyTree (t: tBST) =
+    (!^t == Empty);;
 
 (****************************************************************)
 
@@ -54,19 +73,19 @@ let insert_i (t: tBST) x =
         left = new_pointer Empty;
         right = new_pointer Empty
     }) in
-    if ((!^t) == Empty) then
+    if (isEmptyTree t) then
         t ^:= !^newNode
     else
         let father = new_pointer (new_pointer Empty) in
         let child = new_pointer t in
-        while (((!^(!^child)) != Empty) && (root (!^child) != x)) do
+        while ((not (isEmptyTree (!^child))) && (root (!^child) != x)) do
             father ^:= !^child;
             if (x < root (!^child)) then
                 child ^:= leftChild (!^child)
             else
                 child ^:= rightChild (!^child)
         done;
-        if (!^(!^child) == Empty) then
+        if (isEmptyTree (!^child)) then
             if (x < (root (!^father))) then
                 !^father ^:= Node {
                     key = root (!^father);
@@ -87,7 +106,7 @@ let insertKey (t: tBST) x =
 (****************************************************************)
 
 let rec search_r (t: tBST) x =
-    if ((!^t) == Empty) then
+    if (isEmptyTree t) then
         new_pointer Empty
     else if ((root t) == x) then
         t
@@ -98,7 +117,7 @@ let rec search_r (t: tBST) x =
 
 let search_i (t: tBST) x =
     let node = new_pointer t in
-    while (((!^(!^node)) != Empty) && (root (!^node) != x)) do
+    while ((not (isEmptyTree (!^node))) && (root (!^node) != x)) do
         if (x < root (!^node)) then
             node ^:= leftChild (!^node)
         else
@@ -120,13 +139,13 @@ let rec remove_r (t: tBST) x = match (!^t) with
             remove_r r x
         else 
             let (aux: tBST) = t in
-        if (!^(l) == Empty)
+        if (isEmptyTree l)
             then t ^:= !^r
-        else if (!^(r) == Empty)
+        else if (isEmptyTree r)
             then t ^:= !^l
         else
     let rec sup2 (t2: tBST) = 
-        if ((!^(rightChild t2)) != Empty) then
+        if (not (isEmptyTree (rightChild t2))) then
             sup2 (rightChild t2)
         else
             (aux ^:= Node {
@@ -143,7 +162,7 @@ let remove_i (t: tBST) x =
     let sup = new_pointer t in
     let fSup = new_pointer (new_pointer Empty) in
     (* search for the node to remove *)
-    while (((!^(!^sup)) != Empty) && (root (!^sup) != x)) do
+    while ((not (isEmptyTree (!^sup))) && (root (!^sup) != x)) do
         fSup ^:= !^sup;
         if (x < root (!^sup)) then
                 sup ^:= leftChild (!^sup)
@@ -151,17 +170,18 @@ let remove_i (t: tBST) x =
                 sup ^:= rightChild (!^sup)
     done;
     (* if it isn't in t, do nothing *)
-    if (!^(!^sup) != Empty) then (
+    if (not (isEmptyTree (!^sup))) then (
         (* count the number of childs *)
-        if (!^(leftChild (!^sup)) != Empty) then
+        if (not (isEmptyTree (leftChild (!^sup)))) then
             childNum ^:= (!^childNum + 1)
         else ();
-        if (!^(rightChild (!^sup)) != Empty) then
+        if (not (isEmptyTree (rightChild (!^sup)))) then
             childNum ^:= (!^childNum + 1)
         else ();
         match (!^childNum) with
             0 -> (* remove the leaf node *)
-                if (!^(!^fSup) == Empty) then
+
+                if (isEmptyTree(!^fSup)) then
                     t ^:= Empty (* the root was the only node of the tree *)
                 else if (leftChild (!^fSup) == !^sup) then
                     leftChild (!^fSup) ^:= Empty
@@ -169,11 +189,11 @@ let remove_i (t: tBST) x =
                     rightChild (!^fSup) ^:= Empty
         |   1 -> (* remove node with only 1 child *)
                 let childNotEmpty = new_pointer Empty in
-                if ((!^(leftChild (!^sup))) == Empty) then 
+                if (isEmptyTree (leftChild (!^sup))) then 
                     childNotEmpty ^:= !^(rightChild (!^sup))
                 else
                     childNotEmpty ^:= !^(leftChild (!^sup));
-                if (!^(!^fSup) == Empty) then
+                if (isEmptyTree(!^fSup)) then
                     (* we remove the root *)
                     t ^:= !^childNotEmpty
                 else if (leftChild (!^fSup) == (!^sup)) then
@@ -184,7 +204,7 @@ let remove_i (t: tBST) x =
         |   _ -> (* remove node with 2 childs *)
                 fSup ^:= !^sup;
                 let supLeftMax = new_pointer (leftChild (!^sup)) in
-                while ((!^(rightChild (!^supLeftMax))) != Empty) do
+                while (not (isEmptyTree(rightChild (!^supLeftMax)))) do
                     fSup ^:= !^supLeftMax;
                     supLeftMax ^:= rightChild (!^supLeftMax)
                 done;
@@ -203,45 +223,3 @@ let remove_i (t: tBST) x =
 let removeKey (t: tBST) x =
     remove_r t x;;
 
-(* cambiar si eso para que se parezca más a pascal *)
-let rec preorder (t: tBST) = match (!^t) with
-    Empty ->
-        Printf.printf " () "
-|   Node {key = k; left = l; right = r} ->
-        if ((!^l) == Empty) && ((!^r) == Empty) then
-                (Printf.printf " ( ";
-                Printf.printf "%d" k;
-                Printf.printf " ) ")
-        else
-            (Printf.printf " ( ";
-            Printf.printf "%d " k;
-            preorder l;
-            preorder r;
-            Printf.printf " ) ");;
-
-(*
-
-let t = emptyTree;;
-
-let t = new_pointer Empty;;
-insertKey t 4;;
-insertKey t 4;;
-insertKey t 2;;
-insertKey t 6;;
-insertKey t 1;;
-insertKey t 3;;
-insertKey t 5;;
-insertKey t 7;;
-
-preorder t;;
-
-removeKey t 5;;
-preorder t;;
-removeKey t 6;;
-preorder t;;
-removeKey t 4;;
-preorder t;;
-removeKey t 2;;
-preorder t;;
-
-*)

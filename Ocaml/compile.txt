@@ -1,0 +1,7 @@
+ocamlc -c abb.mli
+ocamlc -c abb.ml
+ocamlc -c abb_program.ml
+ocamlc abb.cmo abb_program.cmo
+./a.out
+
+OCaml version 4.02.3
