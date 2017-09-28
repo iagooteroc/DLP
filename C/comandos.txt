@@ -1,0 +1,2 @@
+gcc main.c Abb_functions.h
+./a.out
