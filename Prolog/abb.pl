@@ -1,4 +1,10 @@
+:- module(abb, [insertKey/3, search/3, preorder/1, removeKey/3]).
+
 % >swipl -s file.pl
+
+% http://www.swi-prolog.org/pldoc/man?section=defmodule
+% http://www.swi-prolog.org/pldoc/man?section=modes
+% http://www.swi-prolog.org/pldoc/man?section=chr-declarations
 
 % emptyTree -> nil
 % bst(K, L, R) -> K = key, L = left node, R = right node.
@@ -10,10 +16,9 @@ insertKey(bst(K, L, R), X, bst(K, L, R2)) :- X > K, insertKey(R, X, R2).
 insertKey(bst(K, L, R), X, bst(K, L, R)) :- X = K.
 insertKey(nil, X, bst(X, nil, nil)).
 
-
 % search(K, T, T2) -> obtains the subtree T2 with the key K in the tree T.
 
-search(X, nil, nil).
+search(_, nil, nil).
 search(X, bst(X, L, R), bst(X, L, R)).
 search(X, bst(K, L, _), T) :- X < K, search(X, L, T).
 search(X, bst(K, _, R), T) :- X > K, search(X, R, T).
@@ -55,3 +60,4 @@ sup(bst(K, L, R), K2, bst(K, L, R2)) :- sup(R, K2, R2).
 % bst(4, bst(2, bst(1, nil, nil), bst(3, nil, nil)), bst(6, bst(5, nil, nil), bst(7, nil, nil)))
 
 % bst(5, bst(3, nil, nil), nil ).
+
