@@ -51,7 +51,7 @@ class BinarySearchTree:
 				father.get().rightChild.set(Node(key))
 
 	def removeKey(self, key):
-		self.remove_r(self.root, key)
+		self.remove_i(self.root, key)
 
 	def remove_r(self, currentNode, key):
 		aux = Pos(None)
@@ -75,6 +75,54 @@ class BinarySearchTree:
 					currentNode.set(currentNode.get().leftChild.get())
 				else:
 					sup2(currentNode.get().leftChild)
+
+	def remove_i(self, currentNode, key):
+		fSup = Pos(None)
+		sup = currentNode
+		while (not isEmpty(sup.get())) and (sup.get().key != key):
+			fSup = sup
+			if (key < sup.get().key):
+				sup = sup.get().leftChild
+			else:
+				sup = sup.get().rightChild
+		if (not isEmpty(sup.get())):
+			childNum = 0
+			if (not isEmpty(sup.get().leftChild.get())):
+				childNum += 1
+			if (not isEmpty(sup.get().rightChild.get())):
+				childNum += 1
+
+			if (childNum == 0):
+				if (isEmpty(fSup.get())):
+					currentNode.set(None)
+				elif (fSup.get().leftChild.get() == sup.get()):
+					fSup.get().leftChild.set(None)
+				else:
+					fSup.get().rightChild.set(None)
+			elif (childNum == 1):
+				if (isEmpty(sup.get().leftChild.get())):
+					childNotEmpty = sup.get().rightChild
+				else:
+					childNotEmpty = sup.get().leftChild
+				if (isEmpty(fSup.get())):
+					currentNode.set(childNotEmpty.get())
+				elif (fSup.get().leftChild.get() == sup.get()):
+					fSup.get().leftChild.set(childNotEmpty.get())
+				else:
+					fSup.get().rightChild.set(childNotEmpty.get())
+			else:
+				fSup = sup
+				supLeftMax = sup.get().leftChild
+				while (not isEmpty(supLeftMax.get().rightChild.get())):
+					fSup = supLeftMax
+					supLeftMax = supLeftMax.get().rightChild
+				sup.get().key = supLeftMax.get().key
+				if (fSup.get() == sup.get()):
+					fSup.get().leftChild.set(supLeftMax.get().leftChild.get())
+				else:
+					fSup.get().rightChild.set(supLeftMax.get().leftChild.get())
+
+
 
 def isEmpty(bst):
 	return bst is None
