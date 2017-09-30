@@ -14,14 +14,14 @@ class Node:
 
 
 class BinarySearchTree:
-	def __init__(self):
-		self.root = Pos(None)
+	def __init__(self, root = Pos(None)):
+		self.root = root
 
 	def insertKey(self, key):
 		if (self.root.get() is None):
 			self.root.set(Node(key))
 		else:
-			self.insert_i(self.root, key)
+			self.insert_r(self.root, key)
 
 	def insert_r(self, currentNode, key):
 		if key < currentNode.get().key:
@@ -128,46 +128,46 @@ def isEmpty(bst):
 	return bst is None
 
 def preorder(bst):
-	preorder_aux(bst.root)
+	preorder_node(bst.root)
 	print("")
 
-def preorder_aux(bst):
+def preorder_node(bst):
 	print(" ( ", end="")
 	if not isEmpty(bst.get()):
 		if not isEmpty(bst.get().leftChild.get()) or not isEmpty(bst.get().rightChild.get()):
 			print(bst.get().key, end="")
-			preorder_aux(bst.get().leftChild)
-			preorder_aux(bst.get().rightChild)
+			preorder_node(bst.get().leftChild)
+			preorder_node(bst.get().rightChild)
 		else:
 			print(bst.get().key, end="")
 	print(" ) ", end="")
 
-"""
+def searchKey(bst, key):
+	return search_i(bst.root, key)
 
-def search(bst, key):
-	return search_r(bst.root, key)
-
-def search_r(bst, key):
-	if (bst is None):
-		return None
-	elif bst.key == key:
-		return bst
-	elif key < bst.key:
-		return search_r(bst.leftChild, key)
+def search_r(currentNode, key):
+	if (isEmpty(currentNode.get())):
+		return BinarySearchTree(Pos(None))
+	elif currentNode.get().key == key:
+		return BinarySearchTree(currentNode)
+	elif key < currentNode.get().key:
+		return search_r(currentNode.get().leftChild, key)
 	else:
-		return search_r(bst.rightChild, key)
+		return search_r(currentNode.get().rightChild, key)
 
-def search_i(bst,key):
-	node = bst
-	while (node != None) and (node.key != key):
-		if key < node.key:
-			node = node.leftChild
+def search_i(currentNode, key):
+	node = currentNode
+	while (not isEmpty(node.get()) and (node.get().key != key)):
+		if key < node.get().key:
+			node = node.get().leftChild
 		else:
-			node = node.rightChild
-	return node
-"""
+			node = node.get().rightChild
+	return BinarySearchTree(node)
+
 
 """
+
+
 T = BinarySearchTree()
 T.insertKey(4)
 T.insertKey(4)
@@ -186,5 +186,7 @@ T.removeKey(4)
 preorder(T)
 T.removeKey(2)
 preorder(T)
+
+
 
 """
