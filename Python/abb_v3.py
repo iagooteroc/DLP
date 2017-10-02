@@ -1,3 +1,4 @@
+# python considers this file a module automatically
 class Pos:
 	def __init__(self, obj):
 		self.obj = obj
@@ -34,6 +35,7 @@ class BinarySearchTree:
 				self.insert_r(currentNode.get().rightChild, key)
 			else:
 				currentNode.get().rightChild.set(Node(key))
+		# ignore duplicates
 
 	def insert_i(self, currentNode, key):
 		father = Pos(None)
@@ -49,12 +51,16 @@ class BinarySearchTree:
 				father.get().leftChild.set(Node(key))
 			else:
 				father.get().rightChild.set(Node(key))
+		# ignore duplicates
 
 	def removeKey(self, key):
 		self.remove_i(self.root, key)
 
 	def remove_r(self, currentNode, key):
 		aux = Pos(None)
+		# procedure to be called when the node to be removed
+		# has two childs, to replace it with the greatest key
+		# from its left subtree.
 		def sup2(bst):
 			if (bst.get().rightChild.get() is not None):
 				sup2(bst.get().rightChild)
@@ -62,6 +68,7 @@ class BinarySearchTree:
 				aux.get().key = bst.get().key
 				bst.set(bst.get().leftChild.get())
 
+		# if its not in the tree, nothing is done
 		if (currentNode.get() is not None):
 			if (key < currentNode.get().key):
 				self.remove_r(currentNode.get().leftChild, key)
@@ -77,41 +84,50 @@ class BinarySearchTree:
 					sup2(currentNode.get().leftChild)
 
 	def remove_i(self, currentNode, key):
-		fSup = Pos(None)
-		sup = currentNode
+		sup = currentNode	# node to be removed
+		fSup = Pos(None)	# father of the node to be removed
+		# search for the node to be removed
 		while (not isEmpty(sup.get())) and (sup.get().key != key):
 			fSup = sup
 			if (key < sup.get().key):
 				sup = sup.get().leftChild
 			else:
 				sup = sup.get().rightChild
+		# if its not in the tree, nothing is done
 		if (not isEmpty(sup.get())):
+			# count the number of childs
 			childNum = 0
 			if (not isEmpty(sup.get().leftChild.get())):
 				childNum += 1
 			if (not isEmpty(sup.get().rightChild.get())):
 				childNum += 1
-
+			# remove leaf node
 			if (childNum == 0):
 				if (isEmpty(fSup.get())):
+					# the root was the only node of the tree
 					currentNode.set(None)
 				elif (fSup.get().leftChild.get() == sup.get()):
 					fSup.get().leftChild.set(None)
 				else:
 					fSup.get().rightChild.set(None)
+			# remove node with only one child
 			elif (childNum == 1):
 				if (isEmpty(sup.get().leftChild.get())):
 					childNotEmpty = sup.get().rightChild
 				else:
 					childNotEmpty = sup.get().leftChild
 				if (isEmpty(fSup.get())):
+					# the root is removed
 					currentNode.set(childNotEmpty.get())
 				elif (fSup.get().leftChild.get() == sup.get()):
 					fSup.get().leftChild.set(childNotEmpty.get())
 				else:
 					fSup.get().rightChild.set(childNotEmpty.get())
+			# remove node with two childs
 			else:
 				fSup = sup
+				# supLeftMax: node with the greatest value from the
+				# left subtree
 				supLeftMax = sup.get().leftChild
 				while (not isEmpty(supLeftMax.get().rightChild.get())):
 					fSup = supLeftMax
