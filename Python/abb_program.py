@@ -1,4 +1,4 @@
-from abb_v3 import *
+from abb import *
 
 def preorder(bst):
 	preorder_node(bst.root)
