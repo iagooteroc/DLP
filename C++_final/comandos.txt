@@ -1,0 +1,2 @@
+g++ Node.h Abb_functions.h Abb_functions.cpp Abb_program.cpp
+./a.out
