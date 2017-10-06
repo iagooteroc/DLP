@@ -1,15 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Authors: 
+ *   Iago Otero Coto - iago.oteroc
+ *   Jorge Viteri Letamendia - j.viteri.letamendia
+ * Emails:
+ *   iago.oteroc@udc.es
+ *   j.viteri.letamendia@udc.es
  */
 
-/* 
- * File:   Node.h
- * Author: jorge
- *
- * Created on 17 de septiembre de 2017, 18:14
- */
 
 #ifndef NODE_H
 #define NODE_H

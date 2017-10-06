@@ -1,18 +1,28 @@
+/*
+ * Authors: 
+ *   Iago Otero Coto - iago.oteroc
+ *   Jorge Viteri Letamendia - j.viteri.letamendia
+ * Emails:
+ *   iago.oteroc@udc.es
+ *   j.viteri.letamendia@udc.es
+ */
+
+
 #include "Node.h"
 #include <stdio.h>
 #include <stdlib.h> 
 
-void crearNodoA(Node** n) {
+void createNodeA(Node** n) {
     (*n) = (Node*) malloc(sizeof (Node));
     if ((*n) == NULL)
-        perror("  *** abb.crearNodoA: no hay memoria");
+        perror("  *** abb.createNodoA: no hay memoria");
 }
 
 //************************************************************************
 
 void insertNode_r(Node** abb, int data) {
     if ((*abb) == NULL) {
-        crearNodoA(abb);
+        createNodeA(abb);
         (*abb)->key = data;
         (*abb)->left = NULL;
         (*abb)->right = NULL;
@@ -31,7 +41,7 @@ void insertNode_r(Node** abb, int data) {
 void insertNode_i(Node** abb, int data) {
     Node *nuevo, *padre, *hijo;
     nuevo = new Node;
-    crearNodoA(&nuevo);
+    createNodeA(&nuevo);
     nuevo->key = data;
     nuevo->left = NULL;
     nuevo->right = NULL;
@@ -58,31 +68,31 @@ void insertNode_i(Node** abb, int data) {
     }
 }
 
-void insertarClave(Node** abb, int newKey) {
+void insertKey(Node** abb, int newKey) {
     insertNode_r(abb, newKey);
 }
 
 /**************************************************************************/
-bool esArbolvacio(Node* abb) {
+bool isEmptyTree(Node* abb) {
     return abb == NULL;
 }
 
-Node* buscar_r(Node* abb, int key) {
+Node* search_r(Node* abb, int key) {
     if ((abb) == NULL)
         return NULL;
     else if ((abb)->key == key)
         return abb;
     else if (key < (abb)->key) {
         Node* left = (abb)->left;
-        buscar_r(left, key);
+        search_r(left, key);
     } else {
         Node* right = (abb)->right;
-        buscar_r(right, key);
+        search_r(right, key);
     }
 
 }
 
-Node* buscar_i(Node* abb, int key) {
+Node* search_i(Node* abb, int key) {
     Node* node = abb;
     while (((node) != NULL) and ((node)->key != key)) {
         if (key < (node)->key)
@@ -93,8 +103,8 @@ Node* buscar_i(Node* abb, int key) {
     return node;
 }
 
-Node* buscarClave(Node* abb, int key) {
-    return buscar_r(abb, key);
+Node* searchKey(Node* abb, int key) {
+    return search_r(abb, key);
 }
 
 
@@ -111,16 +121,16 @@ void sup2(Node** b, Node** aux) {
     }
 }
 
-void eliminar_r(Node** abb, int key) {
+void delete_r(Node** abb, int key) {
     Node* aux;
     if ((*abb) != NULL) {
         if (key < (*abb)->key) {
             Node*& left = (*abb)->left;
-            eliminar_r(&left, key);
+            delete_r(&left, key);
         } else {
             if (key > (*abb)->key) {
                 Node*& right = (*abb)->right;
-                eliminar_r(&right, key);
+                delete_r(&right, key);
             } else {
                 aux = (*abb); 
                 if ((*abb)->left == NULL)
@@ -137,7 +147,7 @@ void eliminar_r(Node** abb, int key) {
     }
 }
 
-void eliminar_i(Node** abb, int key) {
+void delete_i(Node** abb, int key) {
     int numHijos;
     Node *sup, *pSup, *hijoNoVacio, *sucIzMax;
 
@@ -206,6 +216,6 @@ void eliminar_i(Node** abb, int key) {
     }
 }
 
-void eliminar_Clave(Node** abb, int key) {
-    eliminar_r(abb, key);
+void deleteKey(Node** abb, int key) {
+    delete_r(abb, key);
 }
