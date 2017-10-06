@@ -16,17 +16,17 @@ typedef struct Node {
   struct Node *left,*right;
 }Node;
 
-void crearNodoA(Node** n) {
+void createNodeA(Node** n) {
     (*n) = (Node*) malloc(sizeof (Node));
     if ((*n) == NULL)
-        perror("  *** abb.crearNodoA: no hay memoria");
+        perror("  *** abb.createNodoA: no hay memoria");
 }
 
 //************************************************************************
 
 void insertNode_r(Node** abb, int data) {
     if ((*abb) == NULL) {
-        crearNodoA(abb);
+        createNodeA(abb);
         (*abb)->key = data;
         (*abb)->left = NULL;
         (*abb)->right = NULL;
@@ -41,61 +41,61 @@ void insertNode_r(Node** abb, int data) {
 }
 
 void insertNode_i(Node** abb, int data) {
-    Node *nuevo, *padre, *hijo;
-    nuevo = NULL;
-    crearNodoA(&nuevo);
-    nuevo->key = data;
-    nuevo->left = NULL;
-    nuevo->right = NULL;
+    Node *new, *father, *son;
+    new = NULL;
+    createNodeA(&new);
+    new->key = data;
+    new->left = NULL;
+    new->right = NULL;
 
 
     if ((*abb) == NULL) {
-        (*abb) = nuevo;
+        (*abb) = new;
     } else {
-        padre = NULL;
-        hijo = (*abb);
-        while ((hijo != NULL) && (hijo->key != data)) {
-            padre = hijo;
-            if (data < hijo->key)
-                hijo = hijo->left;
+        father = NULL;
+        son = (*abb);
+        while ((son != NULL) && (son->key != data)) {
+            father = son;
+            if (data < son->key)
+                son = son->left;
             else
-                hijo = hijo->right;
+                son = son->right;
         };
-        if (hijo == NULL) {
-            if (data < padre->key)
-                padre->left = nuevo;
+        if (son == NULL) {
+            if (data < father->key)
+                father->left = new;
             else
-                padre->right = nuevo;
+                father->right = new;
         }
     }
 }
 
-void insertarClave(Node** abb, int newKey) {
+void insertKey(Node** abb, int newKey) {
     insertNode_i(abb, newKey);
 }
 
 
-int esArbolvacio(Node* abb) {
+int isEmptyTree(Node* abb) {
     return abb == NULL;
 }
 
 //**************************************************************************
-Node* buscar_r(Node* abb, int key) {
+Node* search_r(Node* abb, int key) {
     if ((abb) == NULL)
         return NULL;
     else if ((abb)->key == key)
         return abb;
     else if (key < (abb)->key) {
         Node* left = (abb)->left;
-        buscar_r(left, key);
+        search_r(left, key);
     } else {
         Node* right = (abb)->right;
-        buscar_r(right, key);
+        search_r(right, key);
     }
 
 }
 
-Node* buscar_i(Node* abb, int key) {
+Node* search_i(Node* abb, int key) {
     Node* node = abb;
     while (((node) != NULL) && ((node)->key != key)) {
         if (key < (node)->key)
@@ -106,8 +106,8 @@ Node* buscar_i(Node* abb, int key) {
     return node;
 }
 
-Node* buscarClave(Node* abb, int key) {
-    return buscar_r(abb, key);
+Node* searchKey(Node* abb, int key) {
+    return search_r(abb, key);
 }
 
 
@@ -124,14 +124,14 @@ void sup2(Node** b, Node** aux) {
     }
 }
 
-void eliminar_r(Node** abb, int key) {
+void delete_r(Node** abb, int key) {
     Node* aux;
     if ((*abb) != NULL) {
         if (key < (*abb)->key) {
-            eliminar_r(&(*abb)->left, key);
+            delete_r(&(*abb)->left, key);
         } else {
             if (key > (*abb)->key) {
-                eliminar_r(&(*abb)->right, key);
+                delete_r(&(*abb)->right, key);
             } else {
                 aux = (*abb);
                 if ((*abb)->left == NULL)
@@ -148,9 +148,9 @@ void eliminar_r(Node** abb, int key) {
     }
 }
 
-void eliminar_i(Node** abb, int key) {
-    int numHijos;
-    Node *sup, *pSup, *hijoNoVacio, *sucIzMax;
+void delete_i(Node** abb, int key) {
+    int numsons;
+    Node *sup, *pSup, *notEmptySon, *sucIzMax;
 
     pSup = NULL;
     sup = (*abb);
@@ -163,16 +163,16 @@ void eliminar_i(Node** abb, int key) {
     }
 
     if (sup != NULL) {
-        numHijos = 0;
+        numsons = 0;
         if (sup->left != NULL)
-            numHijos++;
+            numsons++;
         if (sup->right != NULL)
-            numHijos++;
-        switch (numHijos) {
+            numsons++;
+        switch (numsons) {
             case 0:
             {
                 if (pSup == NULL)
-                    numHijos == 0;
+                    numsons == 0;
                 else if (pSup->left == sup)
                     pSup->left = (NULL);
                 else
@@ -183,16 +183,16 @@ void eliminar_i(Node** abb, int key) {
             case 1:
             {
                 if (sup->left == NULL)
-                    hijoNoVacio = sup->right;
+                    notEmptySon = sup->right;
                 else
-                    hijoNoVacio = sup->left;
+                    notEmptySon = sup->left;
 
                 if (pSup == NULL)
-                    sup = hijoNoVacio; //EL THIS TINH
+                    sup = notEmptySon; //EL THIS TINH
                 else if (pSup->left == sup)
-                    pSup->left = hijoNoVacio;
+                    pSup->left = notEmptySon;
                 else
-                    pSup->right = hijoNoVacio;
+                    pSup->right = notEmptySon;
                 break;
             };
 
@@ -217,6 +217,6 @@ void eliminar_i(Node** abb, int key) {
     }
 }
 
-void eliminar_Clave(Node** abb, int key) {
-    eliminar_i(abb, key);
+void deleteKey(Node** abb, int key) {
+    delete_i(abb, key);
 }

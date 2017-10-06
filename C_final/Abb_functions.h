@@ -1,14 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Abb_functions.h
- * Author: jorge
- *
- * Created on 5 de octubre de 2017, 11:16
+* Authors:
+*   Iago Otero Coto - iago.oteroc
+*   Jorge Viteri Letamendia - j.viteri.letamendia
+* Emails:
+*   iago.oteroc@udc.es
+*   j.viteri.letamendia@udc.es
  */
 
 
@@ -25,7 +21,7 @@ typedef struct Node {
   struct Node *left,*right;
 }Node;
 
-void crearNodoA(Node** n);
+void createNodeA(Node** n);
 
 //************************************************************************
 
@@ -33,30 +29,27 @@ void insertNode_r(Node** abb, int data);
 
 void insertNode_i(Node** abb, int data);
 
-void insertarClave(Node** abb, int newKey);
+void insertKey(Node** abb, int newKey);
 
 
-int esArbolvacio(Node* abb);
+int isEmptyTree(Node* abb);
 
 //**************************************************************************
-Node* buscar_r(Node* abb, int key);
+Node* search_r(Node* abb, int key);
 
-Node* buscar_i(Node* abb, int key);
+Node* search_i(Node* abb, int key);
 
-Node* buscarClave(Node* abb, int key);
-
-
+Node* searchKey(Node* abb, int key);
 
 //************************************************************************
 
 void sup2(Node** b, Node** aux);
 
-void eliminar_r(Node** abb, int key);
+void delete_r(Node** abb, int key);
 
-void eliminar_i(Node** abb, int key);
+void delete_i(Node** abb, int key);
 
-void eliminar_Clave(Node** abb, int key);
+void deleteKey(Node** abb, int key);
 
 
 #endif /* ABB_FUNCTIONS_H */
-
